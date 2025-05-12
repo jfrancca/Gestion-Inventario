@@ -6,6 +6,8 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
+use Spatie\Permission\Models\Role;
+
 
 class AuthController extends Controller
 {
@@ -97,6 +99,30 @@ class AuthController extends Controller
     {
         return response()->json($request->user());
     }
+
+
+    public function createRole(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|unique:roles,name',
+            'guard_name' => 'required|string',
+            'created_at' => 'nullable|date',
+            'updated_at' => 'nullable|date',
+        ]);
+
+        $role = Role::create([
+            'name' => $request->name,
+            'guard_name' => $request->guard_name,
+            'created_at' => $request->created_at ?? now(),
+            'updated_at' => $request->updated_at ?? now(),
+        ]);
+
+        return response()->json([
+            'message' => 'Rol creado correctamente.',
+            'role' => $role,
+        ], 201);
+    }
+
 
 }
 

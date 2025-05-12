@@ -25,6 +25,9 @@ Route::middleware('auth:sanctum')->group(function () {
 // });
 
 
+// Servicio para crear roles
+Route::post('/roles', [AuthController::class, 'createRole']);
+
 
 
 
